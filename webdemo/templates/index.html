@@ -1,0 +1,97 @@
+{% extends "base.html" %} {% block content %}
+<div class="header-image">
+        <div class="header-text">
+            <h1 style="font-size:50px">SlumSeg - Slum Segmentation</h1>
+            <h3 style="font-size:30px">Made with <span style="color: #e25555;">&#9829;</span> by <strong>HKJ</strong></h3>
+        </div>           
+</div>
+<br />
+<div class="w-50 mx-auto">
+    <div>
+        <h3 style="text-align: center"><b>SlumSegRCNN</b></h3>
+        <h4 style="text-align: center"><b>A Deep Convolutional RCNN-powered Architecture for Slum Segmentation</b></h4>
+        <p style="text-align: center"><blockquote style="text-align: center"><i>Use a random image based on area, or upload your own image of a slum to segment the slum in satellite imagery. SlumSeg has been trained to perform semantic segmentation on satellite imagery either taken from Google Earth or Sentinel 3.</i></blockquote></p>
+        <hr>
+        <div clas="container" style='padding:15px'>
+                <form  id="choose-random" method="post" action='/randomImg'>
+                    <div class="form-group row">
+                        <div class= "col-sm-9 col-md-6 col-lg-8" >
+                            <select name="picker" class="form-control" id="randomselect">
+                                <option hidden >Choose Location</option>
+                                <option value = "1">Islamabad</option>
+                                <option value = "2">Karachi Central</option>
+                                <option value = "3">Karachi South</option>
+                                <option value = "4">Mumbai</option>
+                            </select>
+                        </div>
+                        <div class= "col-sm-3 col-md-6 col-lg-4">
+                            <input type="Submit" class="form-control btn btn-secondary" value="Get Random Image" />
+                        </div>
+                    </div>
+                </form>
+        </div>
+
+        {% if ranimage %}
+        <img src="{{ ranimage }}" width="200" height="200">
+        <img src="{{ ranimagemask }}" width="200" height="200">
+        {% endif %}
+    </div>
+    <hr>
+    <h3 style="text-align: center">Test the Network</h3>
+
+    <div class="container">
+        <form id="upload-file" method="post" action="/predict" enctype="multipart/form-data">
+            <div class="row">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+                    <label class="custom-file-label" for="customFile" data-browse="Upload">Upload a valid Image File</label>
+            
+                </div><br><br>
+                <div class="col text-center">
+                    <input type="Submit" class="btn btn-secondary" id="btn-predict" value="Process with SlumSegRCNN"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="result-imgs">
+        {% if filename %}
+            <table class="tg">
+                <thead>
+                    <tr>
+                        <th class="tg-0lax" style="text-align: center">Prediction</th>
+                        <th class="tg-0lax" style="text-align: center">Image</th>
+                        <th class="tg-0lax" style="text-align: center">Mask</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tg-0lax" style="padding: 5px"><img src="{{ filename }}" width="200" height="200"/></td>
+                        <td class="tg-0lax" style="padding: 5px"><img src="{{ file_path }}" width="200" height="200"/></td>
+                        <td class="tg-0lax" style="padding: 5px"><img src="{{ mask_img_path }}" width="200" height="200"/></td>
+                    </tr>
+                </tbody>
+            </table>   
+        {% endif %}
+    </div>
+
+    <div class="loader" style="display:none;"></div>
+    <hr>
+    <h3 style="text-align: center">Gallery</h3>
+    <div class="row">
+        <ul class="images">
+            <li><a href="#"><img src="https://i.ibb.co/nD7P6fb/isb-tile8.jpg" width="200" height="200"/></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/br8Lck4/isb-tile23.jpg" width="200" height="200"/></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/HYWVhtv/kr2.jpg" width="200" height="200"/></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/XCR7bf2/karachi-1.jpg" width="200" height="200"/></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/qRZXGD6/or.png" width="200" height="200"/></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/WFvxQ6W/isb-tile1.jpg" width="200" height="200"/></a></li>
+            <li><a href="#"><img src="https://i.ibb.co/Pt08kjc/delhi.png" width="200" height="200"/></a></li>
+        </ul>
+    </div> 
+    
+    <hr> 
+    <p style="text-align:center">Made with <span style="color: #e25555;">&#9829;</span> by <strong>HKJ</strong></p>
+
+</div>
+{% endblock %}
